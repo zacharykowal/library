@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    padding: 20px;
+    font-family: "Lobster", Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    background-color: #424B54;
+    color: #EBCFB2;
+}
+
+.card-display {
+    padding: 100px;
+    height: 100vh;
+    background-color: #D5ACA9;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    overflow: scroll;
+}
+
+.card {
+    background-color: #EBCFB2;
+    color: #424B54;
+    font-weight: bold;
+    font-family: "Playfair Display", Arial, Helvetica, sans-serif;
+    border-left: 12px solid #424B54;
+    padding: 10px;
+    border-radius: 10px;
+    height: 300px;
+}
