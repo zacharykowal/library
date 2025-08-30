@@ -20,6 +20,10 @@ function Book(title, author, pages, isRead) {
 
 }
 
+Book.prototype.toggleReadStatus = function() {
+    this.isRead = !this.isRead;
+};
+
 function addBookToLibrary(title, author, pages, isRead) {
     const book = new Book(title, author, pages, isRead);
     myLibrary.push(book);
@@ -55,7 +59,14 @@ function refreshCardDisplay() {
 
         const removeButton = document.createElement("button");
         removeButton.innerText = "Remove Book";
+        removeButton.classList.add("remove-button");
+
+        const toggleReadButton = document.createElement("button");
+        toggleReadButton.innerText = "Change Read Status";
+        toggleReadButton.classList.add("toggle-read-button");
+
         newCard.append(removeButton);
+        newCard.append(toggleReadButton);
 
         cardDisplay.appendChild(newCard);
 
@@ -115,13 +126,21 @@ addButton.addEventListener("click", function (event) {
     titleInput.value = '';
     authorInput.value = '';
     pagesInput.value = '';
+
 });
 
 cardDisplay.addEventListener("click", (event) => {
-    if (event.target.tagName === "BUTTON") {
-        const parentCard = event.target.parentElement;
-        const id = parentCard.dataset.bookId;
+
+    const parentCard = event.target.parentElement;
+    const id = parentCard.dataset.bookId;
+
+    if (event.target.className === "remove-button") {
         removeBookFromLibrary(id);
         refreshCardDisplay();
+    } else if (event.target.className === "toggle-read-button") {
+        const foundBook = myLibrary.find(book => book.id === id);
+        foundBook.toggleReadStatus();
+        refreshCardDisplay();
     }
+
 });
