@@ -1,4 +1,7 @@
 const myLibrary = [];
+const newBookButton = document.querySelector(".new-book");
+const doneButton = document.querySelector("#done-button");
+const addButton = document.querySelector("#submit-button");
 
 function Book(title, author, pages, isRead) {
     
@@ -20,6 +23,10 @@ function addBookToLibrary(title, author, pages, isRead) {
 }
 
 function addLibraryToDisplay() {
+
+    const cardDisplay = document.querySelector(".card-display");
+    cardDisplay.innerHTML = '';
+
     for (const book of myLibrary) {
 
         const newCard = document.createElement("div");
@@ -38,15 +45,55 @@ function addLibraryToDisplay() {
         isRead.textContent = content;
 
         newCard.append(title, author, pages, isRead);
-
-        const cardDisplay = document.getElementsByClassName("card-display")[0];
-        console.log(cardDisplay);
         cardDisplay.appendChild(newCard);
+
     }
+
 }
 
-addBookToLibrary("Harry Potter", "JK Rowling", 300, true);
-addBookToLibrary("My Book", "Me", 200, false);
-addBookToLibrary("Your Book", "You", 50, true);
+newBookButton.addEventListener("click", function () {
+    const sidebar = document.querySelector(".sidebar");
+    sidebar.classList.remove("hidden");
+});
 
-addLibraryToDisplay();
+doneButton.addEventListener("click", function () {
+    const sidebar = document.querySelector(".sidebar");
+    sidebar.classList.add("hidden");
+});
+
+addButton.addEventListener("click", function (event) {
+
+    event.preventDefault();
+
+    const titleInput = document.querySelector("#title");
+    const authorInput = document.querySelector("#author");
+    const pagesInput = document.querySelector("#pages");
+
+    if (titleInput.value.trim().length === 0) {
+        alert("Title field is required.");
+        return;
+    } else if (authorInput.value.trim().length === 0) {
+        alert("Author field is required.");
+        return;
+    } else if (pagesInput.value.trim().length === 0) {
+        alert("Pages field is required.");
+        return;
+    } else if(!Number(pagesInput.value) || !Number.isInteger(Number(pagesInput.value)) || Number(pagesInput.value) <= 0) {
+        alert("Pages field must contain an integer greater than 0.");
+        return;
+    }
+
+    const readStatus = document.querySelector('input[name="read-status"]:checked').value;
+    if (readStatus === "yes") {
+        addBookToLibrary(titleInput.value, authorInput.value, pagesInput.value, true);
+    } else {
+        addBookToLibrary(titleInput.value, authorInput.value, pagesInput.value, false);
+    }
+
+    addLibraryToDisplay();
+
+    titleInput.value = '';
+    authorInput.value = '';
+    pagesInput.value = '';
+    
+});

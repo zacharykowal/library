@@ -4,12 +4,23 @@
     box-sizing: border-box;
 }
 
+.container {
+    display: flex;
+}
+
+.main-content {
+    width: 100%;
+}
+
 .header {
     padding: 20px;
     font-family: "Lobster", Arial, Helvetica, sans-serif;
     font-size: 24px;
     background-color: #424B54;
     color: #EBCFB2;
+    display: flex;
+    align-items: center;
+    gap: 50px;
 }
 
 .card-display {
@@ -35,4 +46,79 @@
 
 .card p {
     margin-bottom: 10px;
+}
+
+.new-book {
+    border-radius: 5px;
+    background-color: #EBCFB2;
+    color: #424B54;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border-radius: 20px;
+    padding: 10px 30px 10px 30px;
+}
+
+.new-book:hover {
+    background-color: #C5BAAF;
+}
+
+.sidebar {
+    background-color: #EBCFB2;
+    color: #424B54;
+    font-family: "Playfair Display", Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+    transition: 0.8s cubic-bezier(.36,-0.01,0,.77);
+}
+
+.hidden {
+    margin-left: -300px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 10px;
+}
+
+input[type="text"], input[type="number"] {
+    border: none;
+    border-radius: 15px;
+    padding: 5px 12px;
+    line-height: 5px;
+    background-color: #D5ACA9;
+    color: #424B54;
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    outline: none;
+}
+
+.form-button {
+    border-radius: 5px;
+    background-color: #D5ACA9;
+    color: #424B54;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border-radius: 20px;
+    padding: 10px 30px 10px 30px;
+}
+
+.form-button:hover {
+    background-color: #C5BAAF;
 }
