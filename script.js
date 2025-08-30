@@ -1,7 +1,10 @@
-const myLibrary = [];
+let myLibrary = [];
 const newBookButton = document.querySelector(".new-book");
 const doneButton = document.querySelector("#done-button");
 const addButton = document.querySelector("#submit-button");
+const cardDisplay = document.querySelector(".card-display");
+const VALIDATION_PASS = 1;
+const VALIDATION_FAIL = 0;
 
 function Book(title, author, pages, isRead) {
     
@@ -22,15 +25,19 @@ function addBookToLibrary(title, author, pages, isRead) {
     myLibrary.push(book);
 }
 
-function addLibraryToDisplay() {
+function removeBookFromLibrary(id) {
+    myLibrary = myLibrary.filter(book => book.id != id);
+}
 
-    const cardDisplay = document.querySelector(".card-display");
+function refreshCardDisplay() {
+
     cardDisplay.innerHTML = '';
 
     for (const book of myLibrary) {
 
         const newCard = document.createElement("div");
         newCard.classList.add("card");
+        newCard.setAttribute('data-book-id', book.id);
 
         const title = document.createElement("p");
         const author = document.createElement("p");
@@ -45,10 +52,32 @@ function addLibraryToDisplay() {
         isRead.textContent = content;
 
         newCard.append(title, author, pages, isRead);
+
+        const removeButton = document.createElement("button");
+        removeButton.innerText = "Remove Book";
+        newCard.append(removeButton);
+
         cardDisplay.appendChild(newCard);
 
     }
 
+}
+
+function validateInput(titleInput, authorInput, pagesInput) {
+    if (titleInput.value.trim().length === 0) {
+        alert("Title field is required.");
+        return VALIDATION_FAIL;
+    } else if (authorInput.value.trim().length === 0) {
+        alert("Author field is required.");
+        return VALIDATION_FAIL;
+    } else if (pagesInput.value.trim().length === 0) {
+        alert("Pages field is required.");
+        return VALIDATION_FAIL;
+    } else if(!Number(pagesInput.value) || !Number.isInteger(Number(pagesInput.value)) || Number(pagesInput.value) <= 0) {
+        alert("Pages field must contain an integer greater than 0.");
+        return VALIDATION_FAIL;
+    }
+    return VALIDATION_PASS;
 }
 
 newBookButton.addEventListener("click", function () {
@@ -69,17 +98,8 @@ addButton.addEventListener("click", function (event) {
     const authorInput = document.querySelector("#author");
     const pagesInput = document.querySelector("#pages");
 
-    if (titleInput.value.trim().length === 0) {
-        alert("Title field is required.");
-        return;
-    } else if (authorInput.value.trim().length === 0) {
-        alert("Author field is required.");
-        return;
-    } else if (pagesInput.value.trim().length === 0) {
-        alert("Pages field is required.");
-        return;
-    } else if(!Number(pagesInput.value) || !Number.isInteger(Number(pagesInput.value)) || Number(pagesInput.value) <= 0) {
-        alert("Pages field must contain an integer greater than 0.");
+    const validationResult = validateInput(titleInput, authorInput, pagesInput);
+    if (validationResult === VALIDATION_FAIL) {
         return;
     }
 
@@ -90,10 +110,18 @@ addButton.addEventListener("click", function (event) {
         addBookToLibrary(titleInput.value, authorInput.value, pagesInput.value, false);
     }
 
-    addLibraryToDisplay();
+    refreshCardDisplay();
 
     titleInput.value = '';
     authorInput.value = '';
     pagesInput.value = '';
-    
+});
+
+cardDisplay.addEventListener("click", (event) => {
+    if (event.target.tagName === "BUTTON") {
+        const parentCard = event.target.parentElement;
+        const id = parentCard.dataset.bookId;
+        removeBookFromLibrary(id);
+        refreshCardDisplay();
+    }
 });
